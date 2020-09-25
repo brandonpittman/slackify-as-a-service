@@ -1,24 +1,23 @@
 const slackify = require("slackify-markdown");
 import useClipboard from "react-use-clipboard";
+const zeroWidthSpace = new RegExp(String.fromCharCode(0x200b), "g");
 
 export default function Home() {
   const [input, setInput] = React.useState("");
   const [markdown, setMarkdown] = React.useState("");
-  const [isCopied, setClipboard] = useClipboard(markdown);
+  const [isCopied, setClipboard] = useClipboard(
+    markdown.replace(zeroWidthSpace, "")
+  );
   const onChange = ({ target }) => {
     setInput(target.value);
     setMarkdown(slackify(target.value));
   };
+
   const onPaste = (event) => {
     const text = event.clipboardData.getData("text");
     setMarkdown(slackify(text));
     setClipboard();
   };
-
-  React.useEffect(() => {
-    console.log("markdown:", markdown);
-    console.log("clippy:", isCopied);
-  });
 
   return (
     <>

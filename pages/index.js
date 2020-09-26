@@ -22,7 +22,7 @@ export default function Home() {
   return (
     <>
       <header>
-        <h1>Slackify as a Service</h1>
+        <h1>Slackdown</h1>
       </header>
       <textarea
         onPaste={onPaste}
@@ -31,7 +31,7 @@ export default function Home() {
         id="input"
         name="input"
         cols="80"
-        rows="30"
+        rows="20"
         style={{ width: "100%" }}
       ></textarea>
 

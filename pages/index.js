@@ -1,31 +1,36 @@
 const slackify = require("slackify-markdown");
-import useClipboard from "react-use-clipboard";
 const zeroWidthSpace = new RegExp(String.fromCharCode(0x200b), "g");
 
 export default function Index() {
+  // React.useEffect(() => {
+  //   navigator.permissions.query({ name: "clipboard-read" }).then((result) => {
+  //     if (result.state == "granted" || result.state == "prompt") {
+  //       navigator.clipboard.readText().then((data) => {
+  //         console.log(data);
+  //       });
+  //     }
+  //   });
+  // }, []);
+
   const [input, setInput] = React.useState("");
   const [markdown, setMarkdown] = React.useState("");
-  const [shouldCopy, setShouldCopy] = React.useState(false);
-  const [isCopied, setClipboard] = useClipboard(
-    markdown.replace(zeroWidthSpace, "")
-  );
+  const convertToMarkdown = (input) => {
+    const markdown = slackify(input)
+      .replace(zeroWidthSpace, "")
+      .trim();
+    setMarkdown(markdown);
+  };
+  const onCopy = (text) => navigator.clipboard.writeText(text);
   const onChange = ({ target }) => {
-    setInput(target.value);
-    setMarkdown(slackify(target.value));
+    const input = target.value;
+    setInput(input);
+    convertToMarkdown(input);
   };
 
-  const onPaste = (event) => {
-    const text = event.clipboardData.getData("text");
-    setMarkdown(slackify(text));
-    setShouldCopy(true);
-  };
-
-  React.useEffect(() => {
-    if (shouldCopy) {
-      setClipboard();
-      setShouldCopy(false);
-    }
-  }, [markdown, shouldCopy]);
+  // Do we *really* want to do this to people?
+  // React.useEffect(() => {
+  //   onCopy(markdown);
+  // }, [markdown]);
 
   return (
     <>
@@ -33,7 +38,6 @@ export default function Index() {
         <h1>Slackdown</h1>
       </header>
       <textarea
-        onPaste={onPaste}
         onChange={onChange}
         value={input}
         id="input"
@@ -45,7 +49,7 @@ export default function Index() {
 
       {markdown ? <pre>{markdown}</pre> : null}
 
-      <button onClick={() => setShouldCopy(true)}>Copy to Clipboard</button>
+      <button onClick={() => onCopy(markdown)}>Copy to Clipboard</button>
     </>
   );
 }

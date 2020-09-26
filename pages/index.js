@@ -2,7 +2,7 @@ const slackify = require("slackify-markdown");
 import useClipboard from "react-use-clipboard";
 const zeroWidthSpace = new RegExp(String.fromCharCode(0x200b), "g");
 
-export default function Home() {
+export default function Index() {
   const [input, setInput] = React.useState("");
   const [markdown, setMarkdown] = React.useState("");
   const [shouldCopy, setShouldCopy] = React.useState(false);

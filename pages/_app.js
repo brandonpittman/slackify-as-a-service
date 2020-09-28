@@ -4,6 +4,11 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
+        <title>Slackdown</title>
+        <meta
+          name="description"
+          content="Slackify your Markdown so shit looks good."
+        />
         <link rel="stylesheet" href="https://fonts.xz.style/serve/inter.css" />
         <link
           rel="stylesheet"
